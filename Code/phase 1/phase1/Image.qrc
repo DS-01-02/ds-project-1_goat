@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/IMAGE1">
+        <file>Folder Pics/redfile.png</file>
+        <file>Folder Pics/images.jpeg</file>
+        <file>Folder Pics/help2.png</file>
+        <file>Folder Pics/help.png</file>
+        <file>Folder Pics/folder12.jpeg</file>
+        <file>Folder Pics/folder.png</file>
+        <file>Folder Pics/fileicon.png</file>
+        <file>Folder Pics/download (1).png</file>
+        <file>Folder Pics/download.png</file>
+        <file>Folder Pics/priavcy.png</file>
+        <file>Folder Pics/sort.png</file>
+        <file>Folder Pics/reset.png</file>
+        <file>Folder Pics/reset2.png</file>
+    </qresource>
+</RCC>

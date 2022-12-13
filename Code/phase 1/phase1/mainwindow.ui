@@ -2,21 +2,233 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>598</width>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Folder Pics/folder.png</normaloff>../Folder Pics/folder.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>441</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Folder</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Date</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>20</y>
+      <width>121</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="add">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="remove">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="log">
+       <property name="text">
+        <string>Application Log</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>380</y>
+      <width>131</width>
+      <height>58</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QPushButton" name="apply">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>598</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOption">
+    <property name="title">
+     <string>Option</string>
+    </property>
+    <widget class="QMenu" name="menuSort">
+     <property name="title">
+      <string>Sort by</string>
+     </property>
+     <addaction name="actionName"/>
+     <addaction name="separator"/>
+     <addaction name="actionDate"/>
+     <addaction name="separator"/>
+     <addaction name="actionType"/>
+     <addaction name="separator"/>
+     <addaction name="actionReset"/>
+    </widget>
+    <addaction name="separator"/>
+    <addaction name="menuSort"/>
+    <addaction name="separator"/>
+    <addaction name="actionUnizp_file"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout_Us">
+    <property name="title">
+     <string>About Us</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrivacy_policy"/>
+   </widget>
+   <widget class="QMenu" name="menuMemberShip">
+    <property name="title">
+     <string>MemberShip</string>
+    </property>
+    <addaction name="actionWhy_should_we_join_FMS_community"/>
+    <addaction name="separator"/>
+   </widget>
+   <addaction name="menuOption"/>
+   <addaction name="menuAbout_Us"/>
+   <addaction name="menuMemberShip"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionName">
+   <property name="icon">
+    <iconset resource="Image.qrc">
+     <normaloff>:/IMAGE1/Folder Pics/sort.png</normaloff>:/IMAGE1/Folder Pics/sort.png</iconset>
+   </property>
+   <property name="text">
+    <string>Name</string>
+   </property>
+  </action>
+  <action name="actionDate">
+   <property name="icon">
+    <iconset resource="Image.qrc">
+     <normaloff>:/IMAGE1/Folder Pics/sort.png</normaloff>:/IMAGE1/Folder Pics/sort.png</iconset>
+   </property>
+   <property name="text">
+    <string>Date</string>
+   </property>
+  </action>
+  <action name="actionType">
+   <property name="icon">
+    <iconset resource="Image.qrc">
+     <normaloff>:/IMAGE1/Folder Pics/sort.png</normaloff>:/IMAGE1/Folder Pics/sort.png</iconset>
+   </property>
+   <property name="text">
+    <string>Type</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset>
+     <normaloff>../Folder Pics/help.png</normaloff>../Folder Pics/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionPrivacy_policy">
+   <property name="icon">
+    <iconset resource="Image.qrc">
+     <normaloff>:/IMAGE1/Folder Pics/priavcy.png</normaloff>:/IMAGE1/Folder Pics/priavcy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Privacy and policy</string>
+   </property>
+  </action>
+  <action name="actionWhy_should_we_join_FMS_community">
+   <property name="text">
+    <string>Why should we join FMS community ?</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="icon">
+    <iconset resource="Image.qrc">
+     <normaloff>:/IMAGE1/Folder Pics/reset2.png</normaloff>:/IMAGE1/Folder Pics/reset2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionUnizp_file">
+   <property name="text">
+    <string>Unizp file</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="Image.qrc"/>
+ </resources>
  <connections/>
 </ui>
