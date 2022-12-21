@@ -1,0 +1,4 @@
+#ifndef ZIPPINGPROCESS_H
+#define ZIPPINGPROCESS_H
+
+#endif // ZIPPINGPROCESS_H

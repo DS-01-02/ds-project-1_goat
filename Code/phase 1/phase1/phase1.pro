@@ -28,15 +28,18 @@ win32 {
 INCLUDEPATH += $${QUAZIPCODEDIR}
 HEADERS += $${QUAZIPCODEDIR}/*.h \
     DataBaseConnection.h \
-    DirectoryRevision.h \
     FileFormat.h \
     SeperatingNameIntoPieces.h \
+    SeperatingNameIntoPieces.h \
+    ZippingProcess.h \
     ZippingProcess.h
 SOURCES += $${QUAZIPCODEDIR}/*.cpp \
     DataBaseConnection.cpp \
     DirectoryRevision.cpp \
     FileFormat.cpp \
     SeperatingNameIntoPieces.cpp \
+    SeperatingNameIntoPieces.cpp \
+    ZippingProcess.cpp \
     ZippingProcess.cpp
 SOURCES += $${QUAZIPCODEDIR}/*.c
 
