@@ -265,17 +265,17 @@ void MainWindow::removeChildMainList()
 
 	tr_remove_main->setText(0,"Main");
 	setIconForTopLevelItem(tr_remove_main);
-//    for (int i = 0; i <int(file.size()); ++i)
-//    {
-//        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
-//        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
-//        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
-//        setIconForPhase1Children(tr_main_sub_folder);
-//        items_remove.append(tr_main_sub_folder);
-//        items_remove.at(i)->setCheckState(0 , Qt::Unchecked);
-//        tr_main_sub_folder = new QTreeWidgetItem() ;
-//    }
-//    tr_remove_main->insertChildren(0,items_remove);
+    for (int i = 0; i <int(file.size()); ++i)
+    {
+        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
+        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
+        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
+        setIconForPhase1Children(tr_main_sub_folder);
+        items_remove.append(tr_main_sub_folder);
+        items_remove.at(i)->setCheckState(0 , Qt::Unchecked);
+        tr_main_sub_folder = new QTreeWidgetItem() ;
+    }
+    tr_remove_main->insertChildren(0,items_remove);
 }
 
 void MainWindow::hideRemove_Add_Widgets()
@@ -292,9 +292,16 @@ void MainWindow::on_remove_clicked()
 {
    removeWidgets();
    ui->treeWidget->addTopLevelItem(tr_remove_main);
+   ui->actionName->setEnabled(false);
+   ui->actionDate->setEnabled(false);
+   ui->actionType->setEnabled(false);
+   ui->actionReset->setEnabled(false);
    ui->add->hide();
    ui->remove->hide();
    ui->log->hide();
+   ui->step2->hide();
+   ui->step3->hide();
+   ui->step4->hide();
    ui->apply->show();
    ui->cancel->show();
 }
@@ -302,44 +309,126 @@ void MainWindow::on_remove_clicked()
 void MainWindow::on_cancel_clicked()
 {
 	hideRemove_Add_Widgets();
+    hideRemove_Add_Widgets();
+    ui->actionName->setEnabled(true);
+    ui->actionDate->setEnabled(true);
+    ui->actionType->setEnabled(true);
 }
 
 void MainWindow::removeFromTree()
 {
- //remover data base
-	ui->apply->hide();
-	ui->cancel->hide();
-	ui->add->show();
-	ui->remove->show();
-	ui->log->show();
-	on_actionReset_triggered();
+    FileFormat file ;
+    int ChildernCount =tr_remove_main->childCount() ;
+    int counter = 0;
+    for(int i = 0 ; i < ChildernCount ; i ++)
+    {
 
+        if (tr_remove_main->child(i)->checkState(0) == Qt::Checked)
+        {
+            file.name = tr_remove_main->child(i)->text(1).toStdString();
+            file.date = tr_remove_main->child(i)->text(2).toStdString();
+            file.type = tr_remove_main->child(i)->text(3).toStdString();
+            Directory::removeRecordFromDirectory(file);
+            counter ++ ;
+        }
+    }
+    ui->apply->hide();
+    ui->cancel->hide();
+    ui->add->show();
+    ui->remove->show();
+    ui->log->show();
+    ui->step2->show();
+    ui->step3->show();
+    ui->step4->show();
+
+    if(counter != ChildernCount )
+    {
+        reparentingTree();
+    }
+    else
+    {
+        QString string = Directory::removeDirectoryOfTree();
+        if(string.contains("REMOVED"))
+        {
+            foreach(auto i, tr_main->takeChildren()) delete i;
+            foreach(auto i, tr_name_main->takeChildren()) delete i;
+            foreach(auto i, tr_date_main->takeChildren()) delete i;
+            foreach(auto i, tr_type_main->takeChildren()) delete i;
+            foreach(auto i, tr_remove_main->takeChildren()) delete i;
+            items.clear();
+            items_name.clear();
+            items_date.clear();
+            items_type.clear();
+            items_remove.clear();
+            enableUnzipAction();
+            ui->actionName->setEnabled(false);
+            ui->actionDate->setEnabled(false);
+            ui->actionType->setEnabled(false);
+            ui->remove->setEnabled(false);
+            ui->actionReset->setEnabled(false);
+            ui->step2->setEnabled(false);
+            ui->treeWidget->clear();
+        }
+        else
+        {
+            cerr << string.toStdString() << endl;
+        }
+
+    }
+
+
+}
+
+bool MainWindow::selectedCheckBoxesToRemove()
+{
+    int ChildernCount =tr_remove_main->childCount() ;
+    for(int i = 0 ; i < ChildernCount ; i ++)
+    {
+
+        if (tr_remove_main->child(i)->checkState(0) == Qt::Checked)
+        {
+            return false ;
+        }
+    }
+    return true ;
 
 }
 
 void MainWindow::on_apply_clicked()
 {
-  QMessageBox msg ;
-  msg.setWindowTitle("Warning");
-  msg.setFixedSize(100,100);
-  msg.setText("Selected items will be removed.");
-  msg.setInformativeText("Do you want to continue ?");
-  msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-  msg.setDefaultButton(QMessageBox::Ok);
-  msg.setIcon(QMessageBox::Warning);
-  int ret = msg.exec();
-  switch (ret) {
-	case QMessageBox::Ok:
-		// Ok was clicked
-		removeFromTree();
-		break;
-	case QMessageBox::Cancel:
-		msg.hide();
-		break;
-	default:
-		// should never be reached
-		break;
-  }
+    QMessageBox msg ;
+    msg.setWindowTitle("Warning");
+    msg.setFixedSize(100,100);
+    if(selectedCheckBoxesToRemove())
+    {
+        msg.setText("You must select at least one item.");
+        msg.setInformativeText("Tap Ok button to continue!");
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setIcon(QMessageBox::Warning);
+        msg.exec();
+        return ;
+    }
+    msg.setText("Selected items will be removed.");
+    msg.setInformativeText("Do you want to continue ?");
+    msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msg.setDefaultButton(QMessageBox::Ok);
+    msg.setIcon(QMessageBox::Warning);
+    int ret = msg.exec();
+    switch (ret) {
+    case QMessageBox::Ok:
+        // Ok was clicked
+        ui->actionName->setEnabled(true);
+        ui->actionDate->setEnabled(true);
+        ui->actionType->setEnabled(true);
+        ui->actionReset->setEnabled(true);
+        removeFromTree();
+        break;
+    case QMessageBox::Cancel:
+        msg.hide();
+        break;
+    default:
+        // should never be reached
+        break;
 }
 
 void MainWindow::on_add_clicked()
@@ -471,4 +560,7 @@ void ListContents ( QString ZipFile)
 
 //        //Decompress a single file
 //        //DecompressFiles (ZipFile ,QStringList () << "wp3703397.jpg" , NewDir );
+
+
+
 
