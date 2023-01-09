@@ -51,7 +51,7 @@ public:
     void removeFromTree();
     bool selectedCheckBoxesToRemove();
     bool checkDirectoryExistance() ;
-    void Unzipagain();
+    void enableUnzipAction();
     ZippingProcess * zip ;
     QLabel * tree_header_label_first_column ;
     QTreeWidgetItem * tr_main;
