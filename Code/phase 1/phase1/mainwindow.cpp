@@ -99,8 +99,14 @@ void MainWindow::sortName()
 		delete db ;
 		db = nullptr ;
 	}
-	//data base
-
+    db = new Dbconnection ();
+    vector<FileFormat> file ;
+    QString result = db->ascendingSortBasedOnName(file, "name");
+    if(result != "success(Query)")
+    {
+        cerr << "could not source by name\n";
+        terminate();
+    }
 	tr_name_main->setText(0,"Main");
 	setIconForTopLevelItem(tr_name_main);
 //    for (int i = 0; i <int(file.size()); ++i)
@@ -125,18 +131,26 @@ void MainWindow::sortDate()
 		db = nullptr ;
 	}
    //data base
-//    tr_date_main->setText(0,"Main");
-//    setIconForTopLevelItem(tr_date_main);
-//    for (int i = 0; i <int(file.size()); ++i)
-//    {
-//        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
-//        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
-//        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
-//        setIconForPhase1Children(tr_main_sub_folder);
-//        items_date.append(tr_main_sub_folder);
-//        tr_main_sub_folder = new QTreeWidgetItem() ;
-//    }
-//    tr_date_main->insertChildren(0,items_date);
+    db = new Dbconnection ();
+    vector<FileFormat> file ;
+    QString result = db->ascendingSortBasedOnName(file, "date");
+    if(result != "success(Query)")
+    {
+        cerr << "could not source by date\n";
+        terminate();
+    }
+    tr_date_main->setText(0,"Main");
+    setIconForTopLevelItem(tr_date_main);
+    for (int i = 0; i <int(file.size()); ++i)
+    {
+        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
+        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
+        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
+        setIconForPhase1Children(tr_main_sub_folder);
+        items_date.append(tr_main_sub_folder);
+        tr_main_sub_folder = new QTreeWidgetItem() ;
+    }
+    tr_date_main->insertChildren(0,items_date);
 
 }
 
@@ -147,19 +161,48 @@ void MainWindow::sortType()
 		delete db ;
 		db = nullptr ;
 	}
-   // data base
+    db = new Dbconnection ();
+    vector<FileFormat> file ;
+    QString result = db->ascendingSortBasedOnName(file, "type_file");
+    if(result != "success(Query)")
+    {
+        cerr << "could not source by type\n";
+        terminate();
+    }
 	tr_type_main->setText(0,"Main");
 	setIconForTopLevelItem(tr_type_main);
-//    for (int i = 0; i <int(file.size()); ++i)
-//    {
-//        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
-//        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
-//        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
-//        setIconForPhase1Children(tr_main_sub_folder);
-//        items_type.append(tr_main_sub_folder);
-//        tr_main_sub_folder = new QTreeWidgetItem() ;
-//    }
-//    tr_type_main->insertChildren(0,items_type);
+    for (int i = 0; i <int(file.size()); ++i)
+    {
+        tr_main_sub_folder->setText(1,QString::fromStdString( file.at(i).name));
+        tr_main_sub_folder->setText(2,QString::fromStdString(file.at(i).date));
+        tr_main_sub_folder->setText(3,QString::fromStdString(file.at(i).type));
+        setIconForPhase1Children(tr_main_sub_folder);
+        items_type.append(tr_main_sub_folder);
+        tr_main_sub_folder = new QTreeWidgetItem() ;
+    }
+    tr_type_main->insertChildren(0,items_type);
+}
+
+void MainWindow::sortReset(bool flag_phase2)
+{
+    if(file_reset_action.size() != 0)
+    {
+        file_reset_action.clear();
+    }
+    readingFromDatabase(file_reset_action);
+    for (int i = 0; i <int(file_reset_action.size()); ++i)
+    {
+        tr_main_sub_folder->setText(1,QString::fromStdString( file_reset_action.at(i).name));
+        tr_main_sub_folder->setText(2,QString::fromStdString(file_reset_action.at(i).date));
+        tr_main_sub_folder->setText(3,QString::fromStdString(file_reset_action.at(i).type));
+        setIconForPhase1Children(tr_main_sub_folder);
+        items.append(tr_main_sub_folder);
+        tr_main_sub_folder = new QTreeWidgetItem() ;
+    }
+    if(!flag_phase2)
+    {
+        tr_main->insertChildren(0,items);
+    }
 }
 
 void MainWindow::on_actionName_triggered()

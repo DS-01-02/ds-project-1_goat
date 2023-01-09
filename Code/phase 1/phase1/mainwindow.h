@@ -45,6 +45,7 @@ public:
     void sortName();
     void sortDate();
     void sortType();
+    void sortReset(bool flag_phase2);
     void removeChildMainList();
     void hideRemove_Add_Widgets();
     void removeFromTree();
