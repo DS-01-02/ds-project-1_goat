@@ -21,14 +21,15 @@ Adding::Adding(QWidget *parent) :
 
 
 }
+//Basically it is for adding ui
 void Adding::adjustLayout()
 {
-  setWindowTitle("Ading new File");
+  setWindowTitle("Adding new File");
 }
 
 void Adding::fillingCompletersLists()
 {
-    for ( int i = 1800 ; i <= 2022 ; i++)
+    for ( int i = 1800 ; i <= 2023 ; i++)
     {
         date_list.append(QString::fromStdString(to_string(i)));
     }
