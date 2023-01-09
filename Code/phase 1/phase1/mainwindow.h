@@ -52,6 +52,10 @@ public:
     bool selectedCheckBoxesToRemove();
     bool checkDirectoryExistance() ;
     void enableUnzipAction();
+    void rebuildingRootTree();
+    void reviseRootDirectory(FileFormat & file);
+    void removingRootDirectoryFiles(vector<FileFormat> &file);
+    bool checkExistanceOfeachSubFolder_PHASE2(QString folder_name_based_on_date);
     ZippingProcess * zip ;
     QLabel * tree_header_label_first_column ;
     QTreeWidgetItem * tr_main;

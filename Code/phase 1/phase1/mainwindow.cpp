@@ -507,6 +507,221 @@ void MainWindow::reparentingTree()
     on_actionReset_triggered();
 }
 
+void MainWindow::topLevelItemForRootBasedOnDate()
+{
+    fstream date;
+    fstream sub_dir;
+    date.open("valid_date.txt" , ios::in);
+    string line;
+    QTreeWidgetItem * root = new QTreeWidgetItem ;
+    root->setText(0,"root");
+    setIconForTopLevelItem(root);
+    ui->treeWidget->addTopLevelItem(root);
+    ui->treeWidget->setColumnWidth(0,130);
+    QTreeWidgetItem * child = new QTreeWidgetItem ;
+    QTreeWidgetItem * child_0 ;
+
+    if(date.is_open())
+    {
+        //For reading last line of subdirs' names
+        while(getline(date, line))
+        {
+            tr_main_sub_folder->setText(0,QString::fromStdString(line));
+            setIconForTopLevelItem(tr_main_sub_folder);
+            fstream sub_dir;
+            sub_dir.open(line);
+            QList <QTreeWidgetItem*> list_photo ;
+            QList <QTreeWidgetItem*> list_video ;
+            QList <QTreeWidgetItem*> list_voice ;
+            QList <QTreeWidgetItem*> list_text ;
+            QList <QTreeWidgetItem*> list_pdf ;
+
+
+            if(sub_dir.is_open())
+            {
+                string column_name , column_date , column_type;
+                while (sub_dir >> column_name >> column_date >> column_type)
+                {
+
+                    if(column_type == "mp4" || column_type == "mov" || column_type == "‫‪avl‬‬" || column_type == "‫‪mkv"  )
+                    {
+
+
+                        child->setText(1,QString::fromStdString(column_name));
+                        child->setText(2,QString::fromStdString(column_date));
+                        child->setText(3,QString::fromStdString(column_type));
+                        setIconForPhase1Children(child);
+                        list_video.append(child);
+                        child = new QTreeWidgetItem ;
+
+
+                    }
+                    else if (column_type == "jpeg" || column_type == "png" || column_type == "gif" || column_type == "jpg")
+                    {
+                        child->setText(1,QString::fromStdString(column_name));
+                        child->setText(2,QString::fromStdString(column_date));
+                        child->setText(3,QString::fromStdString(column_type));
+                        setIconForPhase1Children(child);
+                        list_photo.append(child);
+                        child = new QTreeWidgetItem ;
+                    }
+                    else if (column_type == "wav" || column_type == "aiff")
+                    {
+                        child->setText(1,QString::fromStdString(column_name));
+                        child->setText(2,QString::fromStdString(column_date));
+                        child->setText(3,QString::fromStdString(column_type));
+                        setIconForPhase1Children(child);
+                        list_voice.append(child);
+                        child = new QTreeWidgetItem ;
+                    }
+                    else if (column_type == "txt")
+                    {
+                        child->setText(1,QString::fromStdString(column_name));
+                        child->setText(2,QString::fromStdString(column_date));
+                        child->setText(3,QString::fromStdString(column_type));
+                        setIconForPhase1Children(child);
+                        list_text.append(child);
+                        child = new QTreeWidgetItem ;
+                    }
+                    else
+                    {
+                        child->setText(1,QString::fromStdString(column_name));
+                        child->setText(2,QString::fromStdString(column_date));
+                        child->setText(3,QString::fromStdString(column_type));
+                        setIconForPhase1Children(child);
+                        list_pdf.append(child);
+                        child = new QTreeWidgetItem ;
+                    }
+
+                }
+                if(!list_photo.isEmpty())
+                {
+                    child_0 = new QTreeWidgetItem ;
+                    setIconForTopLevelItem(child_0);
+                    child_0->addChildren(list_photo);
+                     child_0->setText(0 , "photo");
+                    tr_main_sub_folder->addChild(child_0);
+                }
+                if(!list_video.isEmpty())
+                {
+                    child_0 = new QTreeWidgetItem ;
+                    setIconForTopLevelItem(child_0);
+                    child_0->addChildren(list_video);
+                     child_0->setText(0 , "video");
+                    tr_main_sub_folder->addChild(child_0);
+                }
+                if(!list_voice.isEmpty())
+                {
+                    child_0 = new QTreeWidgetItem ;
+                    setIconForTopLevelItem(child_0);
+                    child_0->addChildren(list_voice);
+                     child_0->setText(0 , "voice");
+                    tr_main_sub_folder->addChild(child_0);
+                }
+                if(!list_pdf.isEmpty())
+                {
+                    child_0 = new QTreeWidgetItem ;
+                    setIconForTopLevelItem(child_0);
+                    child_0->addChildren(list_pdf);
+                     child_0->setText(0 , "pdf");
+                    tr_main_sub_folder->addChild(child_0);
+                }
+                if(!list_text.isEmpty())
+                {
+                    child_0 = new QTreeWidgetItem ;
+                    setIconForTopLevelItem(child_0);
+                    child_0->addChildren(list_text);
+                     child_0->setText(0 , "text");
+                    tr_main_sub_folder->addChild(child_0);
+                }
+
+                root->addChild(tr_main_sub_folder);
+                tr_main_sub_folder = new QTreeWidgetItem ;
+            }
+            sub_dir.close();
+            //Removing file
+            const char *cstr = line.c_str();
+            remove(cstr);
+        }
+    }
+    delete  child ;
+    child = nullptr ;
+}
+
+void MainWindow::rebuildingRootTree()
+{
+    removeWidgets();
+    topLevelItemForRootBasedOnDate();
+
+}
+
+void MainWindow::reviseRootDirectory(FileFormat & file)
+{
+    fstream valid_file_date ;
+    fstream insert_to_file ;
+    valid_file_date.open("valid_date.txt" ,ios::trunc);
+
+    bool check = checkExistanceOfeachSubFolder_PHASE2(QString::fromStdString(file.date));
+    if(!check)
+    {
+        Directory::makingDirectoriesforeachDate_PHASE2(QString::fromStdString(file.date));
+        Directory::insertingFileIntoFolders_PHASE2(QString::fromStdString
+                                                   (file.date),
+                                                   QString::fromStdString
+                                                   (file.name
+                                                    + "." +
+                                                    file.date
+                                                    + "." +
+                                                    file.type ) , QString::fromStdString(file.type) );
+
+        valid_file_date.open("valid_date.txt" , ios::app);
+        if(valid_file_date.is_open())
+        {
+            valid_file_date << file.date << endl;
+        }
+        valid_file_date.close();
+        insert_to_file.open(file.date , ios::app);
+        if(insert_to_file.is_open())
+        {
+            insert_to_file << file.name << " " <<  file.date << " " <<  file.type << endl;
+        }
+        insert_to_file.close();
+
+        return ;
+    }
+    else
+    {
+        Directory::insertingFileIntoFolders_PHASE2(QString::fromStdString
+                                                   (file.date),
+                                                   QString::fromStdString
+                                                   (file.name
+                                                    + "." +
+                                                    file.date
+                                                    + "." +
+                                                    file.type ) , QString::fromStdString(file.type)  );
+        insert_to_file.open(file.date , ios::app);
+        if(insert_to_file.is_open())
+        {
+            insert_to_file << file.name << " " <<  file.date << " " <<  file.type << endl;
+        }
+        insert_to_file.close();
+
+    }
+
+
+
+    return ;
+}
+
+void MainWindow::removingRootDirectoryFiles(vector<FileFormat> &file)
+{
+    Directory::removingFilesfromRootDirectory(file);
+}
+
+bool MainWindow::checkExistanceOfeachSubFolder_PHASE2(QString folder_name_based_on_date)
+{
+    return Directory::existanceOfSubfolderBasedOnDate_PHASE2(folder_name_based_on_date);
+}
 
 void MainWindow::on_step2_clicked()
 {
