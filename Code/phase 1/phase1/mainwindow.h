@@ -49,6 +49,7 @@ public:
     void removeChildMainList();
     void hideRemove_Add_Widgets();
     void removeFromTree();
+    bool selectedCheckBoxesToRemove();
     bool checkDirectoryExistance() ;
     void Unzipagain();
     ZippingProcess * zip ;
@@ -65,6 +66,8 @@ public:
     QList<QTreeWidgetItem *> items_type;
     QList<QTreeWidgetItem *> items_remove ;
     Dbconnection  * db ;
+    vector<FileFormat>  file_reset_action ; // It will be needded in phase 3
+
 
 private slots:
     void on_actionName_triggered();
