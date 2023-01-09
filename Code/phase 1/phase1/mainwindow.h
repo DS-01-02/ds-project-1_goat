@@ -90,6 +90,14 @@ private slots:
 
     void on_actionHelp_triggered();
 
+    void on_actionUnizp_file_triggered();
+
+    void on_actionRefresh_triggered();
+
+    void on_step2_clicked();
+
+    void on_step3_clicked();
+
 private:
     Ui::MainWindow *ui;
 
