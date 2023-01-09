@@ -508,6 +508,74 @@ void MainWindow::reparentingTree()
 }
 
 
+void MainWindow::on_step2_clicked()
+{
+    if(ui->step2->text().toStdString() == "phase1")
+    {
+        on_actionReset_triggered();
+        ui->add->setEnabled(true);
+        ui->remove->setEnabled(true);
+        ui->actionDate->setEnabled(true);
+        ui->actionType->setEnabled(true);
+        ui->actionName->setEnabled(true);
+        ui->step2->setText("phase2");
+        return ;
+
+    }
+    bool continue_process = false ;
+    QMessageBox msg ;
+    msg.setWindowTitle("Warning");
+    msg.setFixedSize(100,100);
+    msg.setText("By entering phase 2 , root folder will be changed!");
+    msg.setInformativeText("Are you sure you want to continue?");
+    msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msg.setIcon(QMessageBox::Warning);
+    int res = msg.exec();
+    switch (res)
+    {
+    case QMessageBox::Ok:
+        continue_process = true;
+        break;
+    case QMessageBox::Cancel:
+        msg.hide();
+        return;
+        break;
+    default:
+        break;
+    }
+    if(continue_process)
+    {
+        ui->add->setEnabled(false);
+        ui->remove->setEnabled(false);
+        ui->actionDate->setEnabled(false);
+        ui->actionType->setEnabled(false);
+        ui->actionName->setEnabled(false);
+        ui->actionReset->setEnabled(false);
+
+        if(file_reset_action.size() == 0)
+        {
+            sortReset(true);
+        }
+        removingRootDirectoryFiles(file_reset_action);
+        for ( auto i = 0 ; i < int(file_reset_action.size()) ; i ++ )
+        {
+            reviseRootDirectory(file_reset_action.at(i));
+        }
+        //rebuild and parenting tree
+        rebuildingRootTree();
+        ui->step2->setText("phase1");
+    }
+}
+
+void MainWindow::on_step3_clicked()
+{
+    tree * Tree = new tree ;
+    Tree->show();
+}
+
+
+
+
 
 
 
