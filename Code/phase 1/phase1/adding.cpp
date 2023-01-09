@@ -23,7 +23,7 @@ Adding::Adding(QWidget *parent) :
 }
 void Adding::adjustLayout()
 {
-  setWindowTitle("Adding new File");
+  setWindowTitle("Ading new File");
 }
 
 void Adding::fillingCompletersLists()
