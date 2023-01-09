@@ -433,21 +433,79 @@ void MainWindow::on_apply_clicked()
 
 void MainWindow::on_add_clicked()
 {
-
+    if(tr_main->childCount() == 0)
+    {
+        QProcess process ;
+        QString dirPath = "/home/ali/Downloads/build-Phase1-Desktop_Qt_5_12_12_GCC_64bit-Debug/root";
+        process.start("mkdir" , QStringList() << dirPath);
+        process.waitForFinished();
+        tr_main = new QTreeWidgetItem ;
+        tr_name_main = new QTreeWidgetItem ;
+        tr_date_main = new QTreeWidgetItem ;
+        tr_type_main = new QTreeWidgetItem ;
+        tr_remove_main = new QTreeWidgetItem ;
+    }
+    Adding * add = new Adding ();
+    add->show();
+    ui->actionRefresh->setEnabled(true);
+    ui->treeWidget->collapseAll();
+    ui->actionName->setEnabled(false);
+    ui->actionDate->setEnabled(false);
+    ui->actionType->setEnabled(false);
+    ui->actionUnizp_file->setEnabled(false);
+    ui->remove->setEnabled(false);
 }
 
 bool MainWindow::checkDirectoryExistance()
 {
 	return Directory::checkDirectoryExistance();
 }
-void MainWindow::Unzipagain()
+void MainWindow::enableUnzipAction()//Unzipagain()
 {
 	ui->actionUnizp_file->setEnabled(true);
 }
 
+bool MainWindow::enableUnzipProcess()
+{
+    zip = nullptr ;
+    zip = new ZippingProcess ();
+    return zip->continue_process ;
+}
 
-
-
+void MainWindow::reparentingTree()
+{
+    foreach(auto i, tr_main->takeChildren()) delete i;
+    foreach(auto i, tr_name_main->takeChildren()) delete i;
+    foreach(auto i, tr_date_main->takeChildren()) delete i;
+    foreach(auto i, tr_type_main->takeChildren()) delete i;
+    foreach(auto i, tr_remove_main->takeChildren()) delete i;
+    items.clear();
+    items_name.clear();
+    items_date.clear();
+    items_type.clear();
+    items_remove.clear();
+    tr_main = new QTreeWidgetItem ;
+    tr_main->setText(0 ,"root");
+    setIconForTopLevelItem(tr_main);
+    sortReset();
+    tr_name_main = new QTreeWidgetItem ;
+    tr_name_main->setText(0 ,"root");
+    setIconForTopLevelItem(tr_name_main);
+    sortName();
+    tr_date_main = new QTreeWidgetItem ;
+    tr_date_main->setText(0 ,"root");
+    setIconForTopLevelItem(tr_date_main);
+    sortDate();
+    tr_type_main = new QTreeWidgetItem ;
+    tr_type_main->setText(0 ,"root");
+    setIconForTopLevelItem(tr_type_main);
+    sortType();
+    tr_remove_main = new QTreeWidgetItem ;
+    tr_remove_main->setText(0 ,"root");
+    setIconForTopLevelItem(tr_remove_main);
+    removeChildMainList();
+    on_actionReset_triggered();
+}
 
 
 
@@ -560,6 +618,20 @@ void ListContents ( QString ZipFile)
 
 //        //Decompress a single file
 //        //DecompressFiles (ZipFile ,QStringList () << "wp3703397.jpg" , NewDir );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
