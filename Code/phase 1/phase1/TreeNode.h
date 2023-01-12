@@ -10,10 +10,9 @@ using namespace std ;
 class Node
 {
 public:
-    string key;
-    Node *child;
-    Node * next ;
-
+    string data ;
+    Node * parent ;
+    vector<Node *> children_conatiner ;
 
 };
 
