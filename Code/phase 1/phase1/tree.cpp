@@ -13,6 +13,7 @@ tree::tree(QWidget *parent) :
     setWindowTitle("Tree Traversal");
     root = nullptr ;
     subfolder = nullptr ;
+    new_tr = new Tree ;
     fillingCompletersList_AND_CreatingTree();
     sub_folder_completer = new QCompleter(folder_list, this) ;
     tree_creator = new Tree();
@@ -31,53 +32,22 @@ tree::~tree()
 
 void tree::fillingCompletersList_AND_CreatingTree()
 {
-    int level = 0 ;
-    fstream file ;
-    file.open("tree_property.txt" , ios::in);
-    if(file.is_open())
+
+    fstream Subfolder_for_completer_in_phase3 ;
+    Subfolder_for_completer_in_phase3.open("sub.txt" , ios::in);
+    if(Subfolder_for_completer_in_phase3.is_open())
     {
-        string line , QString_to_string ;
-        while(getline(file , line ))
+        string line ;
+        while(getline(Subfolder_for_completer_in_phase3 , line ))
         {
-            QString subfolder_finder = QString::fromStdString(line);
-            QString_to_string = subfolder_finder.toStdString() ;
-            if(!subfolder_finder.contains("."))
-            {
-                //inser into QStringList for QCompleter
-                folder_list << subfolder_finder ;
-                if ( level == 0 )
-                {
-                    root = tree_creator->newNode(QString_to_string);
-                    level ++ ;
-                }
-                else if( level == 1)
-                {
-                    subfolder = tree_creator->addChild(root, QString_to_string);
-                    level ++ ;
-                }
-                else if ( level > 1 )
-                {
-                    subfolder = tree_creator->addChild(subfolder, QString_to_string);
-                }
-            }
-            else
-            {
-                if (level == 1)
-                {
-                    tree_creator->addChild(root , QString_to_string);
-                }
-                else if (level > 1 )
-                {
-                    tree_creator->addChild(subfolder , QString_to_string);
-                }
-            }
+            folder_list.append(QString::fromStdString(line)) ;
         }
     }
     else
     {
         cerr << "Could not open the file for making tree\n";
     }
-    file.close() ;
+    Subfolder_for_completer_in_phase3.close() ;
 }
 
 
@@ -106,26 +76,46 @@ void tree::on_ok_clicked()
     bool ln_check = warningForInvalidSubfolderName(flag);
     if (cmb_check && ln_check)
     {
-        //inorder traversal
-          //tree_creator->inorder(root , folder_list.size()+1);
-          tree_creator->TreeInorder(root->child->next->next->next);
-        //postorder traversal
-
 
         //preorder traversal
+        Node * sub_folder = new_tr->findSubfolder(ui->ln_name->text().toStdString());
+        if(ui->comboBox->currentText().toStdString() == "preorder")
+        {
+            new_tr->preorder(sub_folder) ;
+        }
+        //postorder traversal
+        if(ui->comboBox->currentText().toStdString() == "postorder")
+        {
+            new_tr->postorder(sub_folder);
+        }
+        //inorder
+        if(ui->comboBox->currentText().toStdString() == "inorder")
+        {
+            new_tr->inorder(sub_folder);
+        }
 
 
+        //inorder traversal
+        //tree_creator->inorder(root , folder_list.size()+1);
+        //  tree_creator->TreeInorder(root->child->next->next->next);
 
-      treetraversal * traversal = new treetraversal ;
-      traversal->show() ;
-      this->close();
+        fstream file ;
+        file.open("order.txt",ios::out) ;
+        if(file.is_open())
+        {
+            file << ui->comboBox->currentText().toStdString() << endl;
+        }
+        file.close();
+        treetraversal * traversal = new treetraversal ;
+        traversal->show() ;
+        this->close();
     }
     else if (!ln_check)
     {
         if(flag.length()==0)
         {
-         msg.setText("Name field is empty!!");
-         msg.setInformativeText("Please fill out the form completely.");
+            msg.setText("Name field is empty!!");
+            msg.setInformativeText("Please fill out the form completely.");
         }
         else
         {

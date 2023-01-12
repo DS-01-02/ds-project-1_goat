@@ -55,6 +55,7 @@ private:
     Tree * tree_creator ;
     Node * root ;
     Node * subfolder ;
+    Tree * new_tr ;
 };
 
 #endif // TREE_H
