@@ -6,40 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>103</width>
-    <height>279</height>
+    <width>138</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>0</y>
-     <width>101</width>
-     <height>221</height>
+     <width>121</width>
+     <height>421</height>
     </rect>
    </property>
-   <column>
-    <property name="text">
-     <string>Name</string>
-    </property>
-   </column>
-  </widget>
-  <widget class="QPushButton" name="back">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>230</y>
-     <width>101</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Back</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableWidget" name="tableWidget">
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="back">
+      <property name="text">
+       <string>Back</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

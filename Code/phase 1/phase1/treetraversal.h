@@ -15,6 +15,9 @@ public:
     explicit treetraversal(QWidget *parent = nullptr);
     ~treetraversal();
 
+private slots:
+    void on_back_clicked();
+
 private:
     Ui::treetraversal *ui;
 };
